@@ -27,8 +27,14 @@ test('Naver image tags become the character they draw', () => {
     '마<img src="https://ssl.pstatic.net/sstatic/imgfont/NVD14BL0TRNN/ed93_NVD14BL0TRNN.png" class="t_aw" alt=""/>';
   expect(fromNaverImages(html)).toBe('마');
   expect(toComposed(fromNaverImages(html))).toBe('마ᅀᆞᆯ');
-  const other = '<img src="/imgfont/X/ac00_X.png"><img src="/a/ed93.png">';
+  const other =
+    '<img src="https://ssl.pstatic.net/imgfont/X/ac00_X.png"><img src="/a/ed93.png"><img src="https://example.com/imgfont/X/ed93_X.png">';
   expect(fromNaverImages(other)).toBe(other);
+  expect(
+    fromNaverImages(
+      '<img alt="a > b" src="//ssl.pstatic.net/sstatic/imgfont/NVD14BK0TRNN/ed93_NVD14BK0TRNN.png">',
+    ),
+  ).toBe('\uED93');
 });
 
 test('compatibility letters read back', () => {
@@ -39,6 +45,10 @@ test('compatibility letters read back', () => {
   expect(fromCompatibility('ㅅㆍㄹㅁㅏ')).toBe('ᄉᆞᆯ마');
   expect(fromCompatibility('ㅂㅅㄱㅏ')).toBe('ᄢᅡ');
   expect(fromCompatibility('ㅋㅋ 좋아')).toBe('ㅋㅋ 좋아');
+  expect(fromCompatibility('ㄱㅏㄳㅏ')).toBe('각사');
+  expect(fromCompatibility('ㄱㅏㄺㅏ')).toBe('갈가');
+  expect(fromCompatibility('ㄱㅏㄳ')).toBe('값'.normalize('NFD').replace('\u11B9', '\u11AA').normalize('NFC'));
+  expect(toCompatibility('\u1100\u1161\u11AA')).toBe('ㄱㅏㄳ');
 });
 
 test('reads 聲點 written with dots', () => {

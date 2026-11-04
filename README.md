@@ -44,7 +44,7 @@ toComposed(fromNaverImages(html)); // Naver Dictionary's image glyphs to text
 - **Eleven forms have two code points.** Examples are U+E0E5 and U+E0E7. Both read correctly, and the lower one is written, so these eleven do not round-trip byte for byte.
 - **구결자 and other PUA stay as they are.** 구결자 at U+F67E–U+F77C have no Unicode equivalent. The Jeju font's syllables at U+E001–U+E0A0 are a separate scheme with no table here. `analyze` reports both.
 - **Naver images only go one way.** Naver doesn't serve every code point: U+F66E and U+F8F7 returned 404, so writing image tags would leave broken images, and it would hot-link another site's files.
-- **Images from other sites are not read.** Only Naver's file names are known to hold the code point.
+- **Images from other sites are not read.** `fromNaverImages` only accepts `pstatic.net` addresses, since only Naver's file names are known to hold the code point.
 
 ## What sites use
 

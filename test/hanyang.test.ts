@@ -74,6 +74,8 @@ test('matches Unicode normalization on Hangul', () => {
   const text = 'ᄒᆞᆫ가ᇫ 한글 각';
   expect(toComposed(text)).toBe(text.normalize('NFC'));
   expect(toJamo('한글').normalize('NFC')).toBe('한글');
+  const twoTails = '\u1100\u1161\u11A8\u11B7';
+  expect(toComposed(twoTails)).toBe(twoTails.normalize('NFC'));
 });
 
 test('writes a syllable outside the table by the chosen fallback', () => {
@@ -97,4 +99,6 @@ test('analyze tells representations apart', () => {
   expect(report.gugyeol).toBe(1);
   expect(report.otherPua).toEqual(['']);
   expect(report.oldSyllables).toBe(2);
+  expect(analyze('\u{F0000}').otherPua).toEqual(['\u{F0000}']);
+  expect(analyze('\uD7C7\uFFBF\uFFA0')).toMatchObject({ conjoiningJamo: 0, compatibility: 1 });
 });
