@@ -1,0 +1,51 @@
+{
+  "name": "old-hangul-convert",
+  "version": "0.1.0",
+  "description": "Convert old Hangul between Unicode conjoining jamo, Hanyang PUA, Naver image fonts and compatibility letters",
+  "keywords": [
+    "korean",
+    "hangul",
+    "old-hangul",
+    "yethangul",
+    "hanyang-pua",
+    "pua",
+    "jamo"
+  ],
+  "homepage": "https://hangul.mkpo.li/",
+  "bugs": {
+    "url": "https://github.com/mkpoli/old-hangul-convert/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mkpoli/old-hangul-convert.git"
+  },
+  "license": "MIT",
+  "author": "mkpoli <mkpoli@mkpo.li>",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "check": "tsrs",
+    "test": "bun test",
+    "tables": "bun scripts/build-tables.ts",
+    "lint:package": "publint --strict",
+    "prepublishOnly": "bun run check && bun test && bun run build && bun run lint:package"
+  },
+  "engines": {
+    "node": ">=20.19"
+  },
+  "devDependencies": {
+    "@types/bun": "1.4.4",
+    "publint": "0.3.25",
+    "tsdown": "0.23.4",
+    "tsrs": "0.20.1-ts7.1.0-beta"
+  }
+}
