@@ -57,8 +57,10 @@ export function segment(text: string): Segment[] {
 
 /** The syllable in Normalization Form C: precomposed as far as Unicode allows. */
 export function composedForm({ lead, vowel, tail }: Syllable): string {
-  const whole = precompose(lead, vowel, tail);
-  if (whole) return whole;
+  const first = tail.slice(0, 1);
+  const rest = tail.slice(1);
+  const closed = precompose(lead, vowel, first);
+  if (closed) return closed + rest;
   const open = precompose(lead, vowel, '');
   return open ? open + tail : lead + vowel + tail;
 }
