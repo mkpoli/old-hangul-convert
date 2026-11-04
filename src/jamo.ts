@@ -109,6 +109,7 @@ for (let i = 0; i < LEAD_TO_TAIL_LETTERS.length; i += 2) {
 
 /** The same consonants as a lead (ᇫ → ᅀ), or undefined if a letter has no lead form. */
 export function tailToLead(tail: string): string | undefined {
+  if (!/^[\u11A8-\u11FF\uD7CB-\uD7FB]+$/.test(tail)) return undefined;
   let letters = '';
   for (const char of spellOut(tail)) {
     const lead = LEAD_OF.get(char);

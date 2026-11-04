@@ -74,7 +74,7 @@ function compatLetter(jamo: string): string {
  */
 export function toCompatibility(text: string): string {
   return mapSegments(text, ({ lead, vowel, tail }) => {
-    const coda = tail ? (tailToLead(tail) ?? tail) : '';
+    const coda = tail && !compatLetters().has(tail) ? (tailToLead(tail) ?? tail) : tail;
     return [lead, vowel, coda]
       .filter((part) => part && part !== '\u115F' && part !== '\u1160')
       .map(compatLetter)

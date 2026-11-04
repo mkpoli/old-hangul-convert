@@ -1,8 +1,14 @@
 import { toComposed } from './convert';
-import { joinClusters, leadToTail, spellOut } from './jamo';
+import { joinClusters, leadToTail, spellOut, tailToLead } from './jamo';
 
 const COMPAT_RUN = /[ㄱ-ㆎﾡ-ￜ]+/g;
 const VOWEL = /[ᅠ-ᆧힰ-ퟆ]/;
+
+/** NFKD gives ㄳ as the final ᆪ, which has to become two consonants before it can be split. */
+function readLetter(char: string): string {
+  const jamo = char.normalize('NFKD');
+  return tailToLead(jamo) ?? jamo;
+}
 
 const isOneCluster = (run: string) => joinClusters(run).length === 1;
 
@@ -21,7 +27,7 @@ function splitConsonants(consonants: string): [tail: string, lead: string] {
 }
 
 function readRun(run: string): string {
-  const letters = [...run].map((char) => char.normalize('NFKD'));
+  const letters = [...run].map(readLetter);
   if (!letters.some((letter) => VOWEL.test(letter))) return run;
   let out = '';
   let consonants = '';
