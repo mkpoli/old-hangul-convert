@@ -6,8 +6,14 @@ A web interface is available at [hangul.mkpo.li](https://hangul.mkpo.li).
 
 ## Usage
 
+The package isn't on npm yet. To use it, pack a copy from a clone and install the tarball it prints:
+
 ```sh
-npm install old-hangul-convert
+git clone https://github.com/mkpoli/old-hangul-convert
+cd old-hangul-convert
+bun install
+bun run build
+bun pm pack
 ```
 
 ```ts
