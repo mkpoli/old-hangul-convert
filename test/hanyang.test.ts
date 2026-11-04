@@ -49,8 +49,10 @@ test('round-trips every code point but the lower-numbered twin of a shared form'
 
 test('fromHanyang changes PUA and nothing else', () => {
   expect(fromHanyang('\uE560\uED96')).toBe('\u1106\u119E\u1140\u119E\u11B6');
-  const untouched = '\u1100\u1161 한글 \uF67E\uE001 é 豈';
+  const untouched = '\u1100\u1161 한글 \uF67E\uE001 e\u0301 \uF900';
   expect(fromHanyang(untouched)).toBe(untouched);
+  expect(fromHanyang(`${untouched}\uE560${untouched}`)).toBe(`${untouched}\u1106\u119E${untouched}`);
+  expect(fromHanyang('A\uF86AB')).toBe('AB');
   for (const [pua, jamo] of composed) expect(fromHanyang(pua)).toBe(jamo);
   expect(fromHanyang(toHanyang('\u1106\u119E\u1140\u119E\u11B6'))).toBe('\u1106\u119E\u1140\u119E\u11B6');
 });

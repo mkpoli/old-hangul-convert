@@ -26,7 +26,7 @@ export function hanyangTables(): Tables {
 /**
  * Replaces Hanyang PUA with conjoining jamo and changes nothing else, so 구결자, other
  * private-use characters and the text around them stay byte for byte. Use `toComposed`
- * to normalize the whole text as well.
+ * to normalize the whole text as well. U+F86A is removed, since the KTUG table maps it to nothing.
  */
 export function fromHanyang(text: string): string {
   if (!/[\uE000-\uF8FF]/.test(text)) return text;
