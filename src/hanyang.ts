@@ -23,8 +23,12 @@ export function hanyangTables(): Tables {
   return tables;
 }
 
-/** Replaces Hanyang PUA with conjoining jamo. Other private-use characters stay. */
-export function decodeHanyang(text: string): string {
+/**
+ * Replaces Hanyang PUA with conjoining jamo and changes nothing else, so 구결자, other
+ * private-use characters and the text around them stay byte for byte. Use `toComposed`
+ * to normalize the whole text as well.
+ */
+export function fromHanyang(text: string): string {
   if (!/[\uE000-\uF8FF]/.test(text)) return text;
   const { toJamo } = hanyangTables();
   return text.replace(/[\uE000-\uF8FF]/g, (char) => toJamo.get(char) ?? char);

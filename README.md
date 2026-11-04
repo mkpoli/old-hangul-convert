@@ -28,10 +28,11 @@ toComposed(fromNaverImages(html)); // Naver Dictionary's image glyphs to text
 | `toCompatibility` | Compatibility letters side by side. Lossy: syllable boundaries disappear | ㅅㆍㄹ |
 | `toDotTones` | 聲點 as `·` and `:` before the syllable | ·나랏 |
 
-`from*` functions read spellings that can't be told apart from ordinary text, so you call them only on text you know uses that spelling. They can feed a `to*` function.
+`from*` functions read one spelling and can feed a `to*` function. `fromCompatibility` and `fromDotTones` read spellings that can't be told apart from ordinary text, so call them only on text you know uses that spelling.
 
 | Function | Reads | Example |
 |---|---|---|
+| `fromHanyang` | Hanyang PUA, changing nothing else. `to*` functions already read PUA, so use this when the rest of the text has to stay byte for byte | U+E560 U+ED96 → ᄆᆞᅀᆞᆶ |
 | `fromNaverImages` | `<img>` tags of Naver's image font, into PUA | `…/imgfont/NVD14BL0TRNN/ed93_NVD14BL0TRNN.png` → U+ED93 |
 | `fromCompatibility` | Compatibility letters. Consonants between two vowels are split by a best guess | ㅅㆍㄹ → ᄉᆞᆯ |
 | `fromDotTones` | 聲點 as `·` or `:` before the syllable, or a combining dot or diaeresis after it | ·나랏 → 나〮랏 |
