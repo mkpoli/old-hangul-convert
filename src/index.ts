@@ -8,6 +8,7 @@ export {
   toHanyang,
   toJamo,
 } from './convert';
+export { fromHanyang } from './hanyang';
 export { fromNaverImages } from './naver';
 export { type Other, type Segment, segment, type Syllable } from './segment';
 export { fromDotTones, stripTones, toDotTones } from './tones';

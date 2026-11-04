@@ -1,4 +1,4 @@
-import { decodeHanyang, hanyangTables } from './hanyang';
+import { fromHanyang, hanyangTables } from './hanyang';
 import { decomposeSyllables, joinClusters, LEAD, precompose, TAIL, VOWEL } from './jamo';
 
 /** One Hangul syllable, or a lone jamo, with each part as a single cluster. */
@@ -25,7 +25,7 @@ const JAMO = new RegExp(`[${LEAD}${VOWEL}${TAIL}]`);
  * Runs of jamo become one syllable as Unicode conjoining rules say, so ᄇ + ᄉ + 가 is ᄡ + ᅡ.
  */
 export function segment(text: string): Segment[] {
-  const jamo = decomposeSyllables(decodeHanyang(text));
+  const jamo = decomposeSyllables(fromHanyang(text));
   const segments: Segment[] = [];
   let other = '';
   for (let i = 0; i < jamo.length; ) {

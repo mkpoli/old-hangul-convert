@@ -28,10 +28,11 @@ toComposed(fromNaverImages(html)); // Naver Dictionary's image glyphs to text
 | `toCompatibility` | Compatibility letters side by side. Lossy: syllable boundaries disappear | ㅅㆍㄹ |
 | `toDotTones` | 聲點 as `·` and `:` before the syllable | ·나랏 |
 
-`from*` functions read spellings that can't be told apart from ordinary text, so you call them only on text you know uses that spelling. They can feed a `to*` function.
+`from*` functions read one spelling and can feed a `to*` function. `fromCompatibility` and `fromDotTones` read spellings that can't be told apart from ordinary text, so call them only on text you know uses that spelling.
 
 | Function | Reads | Example |
 |---|---|---|
+| `fromHanyang` | Hanyang PUA, changing nothing else. `to*` functions already read PUA, so use this when the rest of the text has to stay byte for byte | U+E560 U+ED96 → ᄆᆞᅀᆞᆶ |
 | `fromNaverImages` | `<img>` tags of Naver's image font, into PUA | `…/imgfont/NVD14BL0TRNN/ed93_NVD14BL0TRNN.png` → U+ED93 |
 | `fromCompatibility` | Compatibility letters. Consonants between two vowels are split by a best guess | ㅅㆍㄹ → ᄉᆞᆯ |
 | `fromDotTones` | 聲點 as `·` or `:` before the syllable, or a combining dot or diaeresis after it | ·나랏 → 나〮랏 |
@@ -42,6 +43,7 @@ toComposed(fromNaverImages(html)); // Naver Dictionary's image glyphs to text
 
 - **Hanyang PUA holds 5,299 syllables.** `toHanyang` leaves any other syllable as standard jamo. `{ unmapped: 'jamo' }` spells it with the table's PUA jamo instead, which a font has to join itself.
 - **Eleven forms have two code points.** Examples are U+E0E5 and U+E0E7. Both read correctly, and the lower one is written, so these eleven do not round-trip byte for byte.
+- **U+F86A is removed.** It opens the table's final-consonant range, and the KTUG table maps it to nothing. What it was meant to stand for is uncertain.
 - **구결자 and other PUA stay as they are.** 구결자 at U+F67E–U+F77C have no Unicode equivalent. The Jeju font's syllables at U+E001–U+E0A0 are a separate scheme with no table here. `analyze` reports both.
 - **Naver images only go one way.** Naver doesn't serve every code point: U+F66E and U+F8F7 returned 404, so writing image tags would leave broken images, and it would hot-link another site's files.
 - **Images from other sites are not read.** `fromNaverImages` only accepts `pstatic.net` addresses, since only Naver's file names are known to hold the code point.

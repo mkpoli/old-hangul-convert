@@ -1,6 +1,6 @@
 import { expect, test } from 'bun:test';
 import { readFileSync } from 'node:fs';
-import { analyze, segment, toComposed, toHanyang, toJamo } from '../src';
+import { analyze, fromHanyang, segment, toComposed, toHanyang, toJamo } from '../src';
 
 function table(name: string): Map<string, string> {
   const rows = new Map<string, string>();
@@ -45,6 +45,16 @@ test('round-trips every code point but the lower-numbered twin of a shared form'
       expect(toHanyang(jamo)).toBe(pua);
     }
   }
+});
+
+test('fromHanyang changes PUA and nothing else', () => {
+  expect(fromHanyang('\uE560\uED96')).toBe('\u1106\u119E\u1140\u119E\u11B6');
+  const untouched = '\u1100\u1161 한글 \uF67E\uE001 e\u0301 \uF900';
+  expect(fromHanyang(untouched)).toBe(untouched);
+  expect(fromHanyang(`${untouched}\uE560${untouched}`)).toBe(`${untouched}\u1106\u119E${untouched}`);
+  expect(fromHanyang('A\uF86AB')).toBe('AB');
+  for (const [pua, jamo] of composed) expect(fromHanyang(pua)).toBe(jamo);
+  expect(fromHanyang(toHanyang('\u1106\u119E\u1140\u119E\u11B6'))).toBe('\u1106\u119E\u1140\u119E\u11B6');
 });
 
 test('reads the opening of the Hunminjeongeum Eonhae in PUA', () => {
